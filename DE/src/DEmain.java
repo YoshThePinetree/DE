@@ -18,51 +18,43 @@ public class DEmain {
 		// 8:Ackley function, f(0, ..., 0)=0
 		// 9:Levy function, f(1, ..., 1)=0
 			
-		int fnum=9;			// the function number to solve
-		int dim=2;			// the number of dimension of the decision variable
+		int fnum=5;			// the function number to solve
+		int dim=3;			// the number of dimension of the decision variable
 		int trial=5;		// the number of trials with different random initial
 		int ite=1000;		// the number of iterations for a trial
-		int pop=100;		// the number of particles
+		int pop=100;		// the population size
 		int rseed=1;		// random seed: MT method			
-		int an=50;			// the archive size
-		double gpi=0.7;		// the GP selection rate at first
-		double gpf=0.2;		// the GP selection rate at last
-		double sf=0.95;		// the initial scaling factor
-		double af=2.0;		// the asymmetry factor
-		int mi=15;			// the first mutation representatives
-		int mf=6;			// the final mutation representatives
+		double dw=1.0;		// the differential weight [0,2]
+		double cr=0.95;		// the crossover rate [0,1]
+		double cp=0.5;		// the crossover probability [0,1]
+		
 		
 		
 		System.out.printf("General Parameters:\n");
 		System.out.printf("trial\titeration\tparticles\n");
 		System.out.printf("%d\t%d\t\t%d\n",trial,ite,pop);
-		System.out.printf("an\tgpi\tgpf\tsf\taf\tmi\tmf\n");
-		System.out.printf("%d\t%.2f\t%.2f\t%.2f\t%.2f\t%d\t%d\n",an,gpi,gpf,sf,af,mi,mf);
+		System.out.printf("dw\tcr\tcp\n");
+		System.out.printf("%.2f\t%.2f\t%.2f\n",dw,cr,cp);
 		
 		System.out.printf("Function:\n");
 		ObjFunc.FuncName(fnum);
 		
 		// Answer check
-		double[] XX = {1, 1};
-		double ans=ObjFunc.EvalFunc(XX, fnum, dim);
-		System.out.printf("%f\n",ans);
+//		double[] XX = {1, 1};
+//		double ans=ObjFunc.EvalFunc(XX, fnum, dim);
+//		System.out.printf("%f\n",ans);
 		
 		/////////////////////////////////////////////////
 		// Individual Generation & Initial Evaluation  //
 		/////////////////////////////////////////////////
-		double[][] Frec = new double [ite][trial];
-		double[][][] X1rec = new double [ite][dim][trial];
+		double[][] Frec = new double [ite][trial];			// the best fitness log
+		double[][][] X1rec = new double [ite][dim][trial];	// the best variables log
 		
 		Sfmt rnd = new Sfmt(rseed);
-		
-		double gp;
-		int GP;
-		int mn1, mn;
 
 		for(int l=0;l<trial;l++){
 			
 			double[][] X = new double[pop][dim];	// the decision variable matrix
-			double[][] Xn = new double[pop][dim];	// the NORMALIZED decision variable matrix
 			double[] F = new double[pop];		// the objective function for the personal best
 			double[] Gb = new double[dim];		// the global best vector
 			double[][] xylim=ObjFunc.GetLimit(fnum,dim);
@@ -91,11 +83,17 @@ public class DEmain {
 			///////////////////////////
 
 //			System.out.println(Arrays.toString(anum));
-			
 //			System.out.println(F[anum[1]]);	// refer by this manner
 			
+			DEOperator DE = new DEOperator();	// DE operator class
+			
 			for(int k=0; k<ite; k++) {		// MVMO loop start
-//				
+				///// Differential Mutation /////
+				double[][] Xm = new double [pop][dim];	// mutation vector
+				Xm = DE.Mutation(dw, X, rseed);
+				
+				///// Differential Crossover /////
+				
 		
 				/*
 				System.out.printf("Iteration number:\t");
