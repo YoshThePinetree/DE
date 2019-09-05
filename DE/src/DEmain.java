@@ -20,13 +20,16 @@ public class DEmain {
 			
 		int fnum=5;			// the function number to solve
 		int dim=3;			// the number of dimension of the decision variable
-		int trial=5;		// the number of trials with different random initial
+		int trial=1;		// the number of trials with different random initial
 		int ite=1000;		// the number of iterations for a trial
 		int pop=100;		// the population size
 		int rseed=1;		// random seed: MT method			
-		double dw=1.0;		// the differential weight [0,2]
-		double cr=0.95;		// the crossover rate [0,1]
-		double cp=0.5;		// the crossover probability [0,1]
+		int base=1;			// the base vector selection method, 1:rand, 2:best
+		int cross=2;		// the crossover method, 1: binary, 2: exponential
+		double dw=0.7;		// the differential weight [0,2]
+		double cr=0.5;		// the crossover rate [0,1]
+		double cp=0.90;		// the crossover probability [0,1]
+		double cexp=1.002;	// exponential reduction
 		
 		
 		
@@ -86,13 +89,20 @@ public class DEmain {
 //			System.out.println(F[anum[1]]);	// refer by this manner
 			
 			DEOperator DE = new DEOperator();	// DE operator class
+			double cr1 = cr;
 			
 			for(int k=0; k<ite; k++) {		// MVMO loop start
 				///// Differential Mutation /////
 				double[][] Xm = new double [pop][dim];	// mutation vector
-				Xm = DE.Mutation(dw, X, rseed);
+				Xm = DE.Mutation(dw, X, minind, rseed, base);
+				double[][] Xc = new double [(int)(pop*cp)][dim];	// mutation vector
 				
 				///// Differential Crossover /////
+				if(cross==2) {
+					cr1 = cr / (Math.pow(cexp, k));
+				}
+				Xc = DE.Crossover(X, Xm, cr1, cp, rseed);
+				
 				
 		
 				/*
