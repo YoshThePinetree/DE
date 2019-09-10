@@ -51,9 +51,9 @@ public class DEOperator {
 		
 		// select for individuals which is not crossovered
 		int stop=1;
-		int m, sum;
+		int m, sum=0;
 		while(stop==1) {
-			m = rnd.NextInt(pop-1);
+			m = rnd.NextInt(pop);
 			indzero[m]=1;
 			sum = DEOperator.isum(indzero);
 			if(sum >= (pop-(pop*cp))) {
@@ -61,11 +61,12 @@ public class DEOperator {
 			}
 		}
 		
+		
 		// Crossover
 		int n=0;	// counter for U
 		int jrand=0;	// randomly selected dimension
 		double r;
-		for(int i=1; i<pop; i++) {
+		for(int i=0; i<pop; i++) {
 			if(indzero[i]==0) {		// crossover only indzero is 0
 				jrand=rnd.NextInt(dim);
 				
