@@ -18,7 +18,7 @@ public class DEmain {
 		// 8:Ackley function, f(0, ..., 0)=0
 		// 9:Levy function, f(1, ..., 1)=0
 			
-		int fnum=6;			// the function number to solve
+		int fnum=8;			// the function number to solve
 		int dim=5;			// the number of dimension of the decision variable
 		int trial=5;		// the number of trials with different random initial
 		int ite=1000;		// the number of iterations for a trial
