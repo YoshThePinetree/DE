@@ -26,7 +26,7 @@ public class DEmain {
 		int rseed=1;		// random seed: MT method			
 		int base=1;			// the base vector selection method, 1:rand, 2:best
 		int cross=1;		// the crossover method, 1: binary, 2: exponential
-		double dw=0.9;		// the differential weight [0,2]
+		double dw=0.5;		// the differential weight [0,2]
 		double cr=0.5;		// the crossover rate [0,1]
 		double cp=0.90;		// the crossover probability [0,1]
 		double cexp=1.002;	// exponential reduction
